@@ -21,7 +21,7 @@ const Navbar = (props) => {
   const mobileNav = useDisclosure();
   return (
     <Box
-      
+
       {...props}
       bg={bg}
       w="full"
@@ -29,7 +29,6 @@ const Navbar = (props) => {
         base: 2,
         sm: 4,
       }}
-      py={4}
       shadow="md"
     >
       <Flex alignItems="center" justifyContent="space-between" mx="auto">
