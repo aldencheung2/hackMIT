@@ -49,8 +49,8 @@ async function postProcess(data1){
     for (var key of Object.keys(data1)) {
         data1[key]['avgScore'] = data1[key]['totalScore']/data1[key]['count'];
         data1[key]['avgMagnitude'] = data1[key]['totalMagnitude']/data1[key]['count'];
-        data1[key]['avgSalience'] = data1[key]['totalSalience']/data1[key]['count'];
-        relatedSubjects.push({name: key, salience: data1[key]['avgSalience']});
+        // data1[key]['avgSalience'] = data1[key]['totalSalience']/data1[key]['count'];
+        relatedSubjects.push({name: key, salience: data1[key]['totalSalience']});
     }
 
     function salienceComparator(a, b){
@@ -58,8 +58,7 @@ async function postProcess(data1){
     }
 
     data1['relatedSubjects'] = relatedSubjects.sort(salienceComparator).reverse();
-    console.log(data1);
-    return 0;
+    return data1;
 }
 
 // async function processData(myJson){
@@ -73,16 +72,19 @@ async function postProcess(data1){
 // }
 
 async function analyzeEach(myJson){
-    myJson['data'].forEach((input)=>{
-        analyze(input['text']);
-        // totalText += " " + input['text']
-    });
-    console.log(data);
+    await Promise.all(myJson['data'].map(async (input) => {
+        await analyze(input['text']);
+    }));
+    // for(let input of myJson['data']){
+    //     await analyze(input['text']);
+    // }
+    // console.log(data);
     return data;
 }
 
-async function getTweets () {
-    const response = await fetch('https://api.twitter.com/2/tweets/search/recent?query=%22joe%20biden%22%20-is%3Aretweet&max_results=12&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username',
+async function getTweets (term, num) {
+    data = {};
+    const response = await fetch('https://api.twitter.com/2/tweets/search/recent?query=%22' + term + '%22%20-is%3Aretweet&max_results=' + num + '&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username',
     {
         headers:{
             "Authorization": "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n"
@@ -93,26 +95,7 @@ async function getTweets () {
     let data1 = await analyzeEach(myJson);
     
     let result = await postProcess(data1);
-    console.log(result);
-    // console.log(data);
-    // fetch('https://api.twitter.com/2/tweets/search/recent?query=%22joe%20biden%22%20-is%3Aretweet&max_results=12&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username',
-    // {
-    //     headers:{
-    //         "Authorization": "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n"
-    //     }
-    // }).then((response) => {
-    //         return response.json(); //extract JSON from the http response
-    //     }
-    // ).then((myJson) => {
-    //     processData(myJson);
-    // })
-    // .then((data1) => {
-    //         postProcess(data1)
-    //     }
-    // );
-
-    
-    
+    console.log(result);   
 }
 
-  getTweets();
+getTweets('joe%20biden', 10);
