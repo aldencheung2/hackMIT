@@ -4,9 +4,9 @@ const language = require('@google-cloud/language');
 // Creates a client
 const client = new language.LanguageServiceClient();
 
-// var data = {};
+var data = {};
 
-async function analyze(text, data){
+async function analyze(text){
     try{
     const document = {
     content: text,
@@ -59,45 +59,53 @@ async function postProcess(data1){
 
     data1['relatedSubjects'] = relatedSubjects.sort(salienceComparator).reverse();
     console.log(data1);
+    return 0;
 }
 
-async function processData(myJson){
-    data = {};
+// async function processData(myJson){
+//     data = {};
+//     myJson['data'].forEach((input)=>{
+//             data = analyze(input['text'], data);        
+//         }
+//     )
+//     console.log(data);
+//     return data;
+// }
+
+async function analyzeEach(myJson){
     myJson['data'].forEach((input)=>{
-            data = analyze(input['text'], data);        
-        }
-    )
+        analyze(input['text']);
+        // totalText += " " + input['text']
+    });
     console.log(data);
     return data;
 }
 
 async function getTweets () {
-    // const response = await fetch('https://api.twitter.com/2/tweets/search/recent?query=%22joe%20biden%22%20-is%3Aretweet&max_results=12&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username',
-    // {
-    //     headers:{
-    //         "Authorization": "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n"
-    //     }
-    // });
-    // const myJson = await response.json(); //extract JSON from the http response
-    // // let totalText = ""
-    // myJson['data'].forEach((input)=>{
-    //     analyze(input['text']);
-    //     // totalText += " " + input['text']
-    // });
-
-    // postProcess(); 
-    // console.log(data);
-    fetch('https://api.twitter.com/2/tweets/search/recent?query=%22joe%20biden%22%20-is%3Aretweet&max_results=12&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username',
+    const response = await fetch('https://api.twitter.com/2/tweets/search/recent?query=%22joe%20biden%22%20-is%3Aretweet&max_results=12&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username',
     {
         headers:{
             "Authorization": "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n"
         }
-    }).then((response) => {
-            return response.json(); //extract JSON from the http response
-        }
-    ).then((myJson) => {
-        processData(myJson);
-    })
+    });
+    const myJson = await response.json(); //extract JSON from the http response
+
+    let data1 = await analyzeEach(myJson);
+    
+    let result = await postProcess(data1);
+    console.log(result);
+    // console.log(data);
+    // fetch('https://api.twitter.com/2/tweets/search/recent?query=%22joe%20biden%22%20-is%3Aretweet&max_results=12&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username',
+    // {
+    //     headers:{
+    //         "Authorization": "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n"
+    //     }
+    // }).then((response) => {
+    //         return response.json(); //extract JSON from the http response
+    //     }
+    // ).then((myJson) => {
+    //     processData(myJson);
+    // })
     // .then((data1) => {
     //         postProcess(data1)
     //     }
