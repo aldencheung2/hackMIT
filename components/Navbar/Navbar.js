@@ -21,6 +21,7 @@ const Navbar = (props) => {
   const mobileNav = useDisclosure();
   return (
     <Box
+      
       {...props}
       bg={bg}
       w="full"
