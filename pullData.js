@@ -1,68 +1,60 @@
-// // Imports the Google Cloud client library
-// const language = require('@google-cloud/language');
-
-// // Creates a client
-// const client = new language.LanguageServiceClient();
-
-// /**
-//  * TODO(developer): Uncomment the following lines to run this code
-//  */
-// // const bucketName = 'Your bucket name, e.g. my-bucket';
-// // const fileName = 'Your file name, e.g. my-file.txt';
-
-// // Prepares a document, representing a text file in Cloud Storage
-// const document = {
-//   gcsContentUri: `gs://${bucketName}/${fileName}`,
-//   type: 'PLAIN_TEXT',
-// };
-
-// // Detects the sentiment of the document
-// const [result] = await client.analyzeSentiment({document});
-
-// const sentiment = result.documentSentiment;
-// console.log('Document sentiment:');
-// console.log(`  Score: ${sentiment.score}`);
-// console.log(`  Magnitude: ${sentiment.magnitude}`);
-
-// const sentences = result.sentences;
-// sentences.forEach(sentence => {
-//   console.log(`Sentence: ${sentence.text.content}`);
-//   console.log(`  Score: ${sentence.sentiment.score}`);
-//   console.log(`  Magnitude: ${sentence.sentiment.magnitude}`);
-// });
-async function test(){
-
 // Imports the Google Cloud client library
 const language = require('@google-cloud/language');
 
 // Creates a client
 const client = new language.LanguageServiceClient();
 
-/**
- * TODO(developer): Uncomment the following line to run this code.
- */
-const text = "Joe Biden has crashed the stock market, bottomed out 401k's, brought record inflation, sold us out to China, wrecked the middle class, called Americans who disagree with him domestic terrorists and brought us to the brink of WWIII. What EXACTLY are you libs so proud of?";
+var data = {};
 
-// Prepares a document, representing the provided text
-const document = {
-  content: text,
-  type: 'PLAIN_TEXT',
-};
+async function analyze(text){
+    const document = {
+    content: text,
+    type: 'PLAIN_TEXT',
+    };
 
-// Detects the sentiment of the document
-const [result] = await client.analyzeSentiment({document});
+    // Detects sentiment of entities in the document
+    const [result] = await client.analyzeEntitySentiment({document});
+    const entities = result.entities;
 
-const sentiment = result.documentSentiment;
-console.log('Document sentiment:');
-console.log(`  Score: ${sentiment.score}`);
-console.log(`  Magnitude: ${sentiment.magnitude}`);
-
-const sentences = result.sentences;
-sentences.forEach(sentence => {
-  console.log(`Sentence: ${sentence.text.content}`);
-  console.log(`  Score: ${sentence.sentiment.score}`);
-  console.log(`  Magnitude: ${sentence.sentiment.magnitude}`);
-});
+    console.log('Entities and sentiments:');
+    entities.forEach(entity => {
+        console.log(`  Name: ${entity.name}`);
+        console.log(`  Type: ${entity.type}`);
+        console.log(`  Score: ${entity.sentiment.score}`);
+        console.log(`  Magnitude: ${entity.sentiment.magnitude}`);
+        if(entity.name in data){
+            data[]
+        }else{
+            data[entity.name] = {};
+            data[entity.name]['type'] = entity.type;
+            data[entity.name]['totalScore'] = entity.sentiment.score;
+            data[entity.name]['totalMagnitude'] = entity.sentiment.magnitude;
+            data[entity.name]['totalSalience'] = entity.salience;
+            data[entity.name]['mid'] = entity.metadata.mid;     // https://cloud.google.com/natural-language/docs/basics#sentiment-analysis-values
+            data[entity.name]['count'] = entity
+        }
+    });
 }
 
-test();
+
+
+async function getTweets () {
+    const response = await fetch('https://api.twitter.com/2/tweets/search/recent?query=%22joe%20biden%22%20-is%3Aretweet&max_results=12&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username',
+    {
+        headers:{
+            "Authorization": "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n"
+        }
+    });
+    const myJson = await response.json(); //extract JSON from the http response
+    // let totalText = ""
+    myJson['data'].forEach((input)=>{
+        analyze(input['text']);
+        // totalText += " " + input['text']
+    });
+
+    // totalText.concat(" ", 'test----------------------------------------------------------');
+    // console.log(totalText);
+    // analyze(totalText); 
+  }
+
+  getTweets();
