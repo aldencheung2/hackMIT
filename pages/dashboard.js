@@ -34,7 +34,7 @@ export default function Dashboard() {
         border="1px solid black"
       >
         <SearchInput />
-        <TopFiveView />
+        <TopFiveView sentiment={results ? results.mainEntity : null} />
       </Flex>
     </Container>
   );

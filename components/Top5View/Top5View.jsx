@@ -2,6 +2,7 @@ import { Flex, Text, Heading, HStack } from "@chakra-ui/react";
 import Person from "../Person/Person";
 
 const TopFiveView = (props) => {
+  console.log(props);
   return (
     <Flex
       {...props}
@@ -10,10 +11,10 @@ const TopFiveView = (props) => {
       width="full"
       mt={24}
     >
-      <Person />
-      <Person />
-      <Person />
-      <Person />
+      <Person sentiment={props.sentiment} />
+      <Person sentiment={props.sentiment} />
+      <Person sentiment={props.sentiment} />
+      <Person sentiment={props.sentiment} />
     </Flex>
   );
 };
