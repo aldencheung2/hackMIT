@@ -1,9 +1,23 @@
 import { Container, Flex } from "@chakra-ui/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import SearchInput from "../components/SearchInput/SearchInput";
 import TopFiveView from "../components/Top5View/Top5View";
 
 export default function Dashboard() {
+  const [results, setResults] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get("api/hello");
+      console.log(result);
+      setResults(result);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Container
       maxW="container.xl"

@@ -7,7 +7,7 @@ const client = new language.LanguageServiceClient();
 var data = {};
 
 async function analyze(text){
-    try{
+    try {
     const document = {
     content: text,
     type: 'PLAIN_TEXT',

@@ -12,11 +12,17 @@
     "@chakra-ui/react": "^2.3.4",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@google-cloud/language": "^5.1.0",
+    "axios": "^0.27.2",
+    "child_process": "^1.0.2",
     "framer-motion": "^7.5.1",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-google-charts": "^4.0.0"
+  },
+  "browser": {
+    "child_process": false
   },
   "devDependencies": {
     "eslint": "8.24.0",
