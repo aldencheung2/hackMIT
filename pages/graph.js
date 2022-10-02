@@ -2,7 +2,7 @@ import React from "react";
 import { Chart } from "react-google-charts";
 import { useState, useEffect } from "react";
 import axios, { Axios } from "axios";
-import dummyData from "./test.json";
+// import stocks from "./test.json";
 
 export const options = {
   chart: {
@@ -25,48 +25,51 @@ export const options = {
 };
 
 const DualGraph = () => {
-  // const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState([]);
 
-  // useEffect(() => {
-  //   const getData = () => {};
-  //   let stock = "IBM";
-  //   if (stock != undefined) {
-  //     // // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=demo
-  //     const getData = async () => {
-  //       const beginString =
-  //         "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=";
-  //       const endString = "&interval=5min&apikey=N3GPUAQX5ZZBX9KH";
-  //       const stockVal = beginString + stock + endString;
-  //       const response = await axios.get(stockVal);
-  //       const myJson = await response.data;
-  //       let values = myJson;
-  //       let dailyClose = [];
-  //       for (let i = 1; i < 31; i++) {
-  //         let numVal = i;
-  //         let text;
-  //         if (i < 10) {
-  //           text = "0" + numVal.toString();
-  //         } else {
-  //           text = numVal.toString();
-  //         }
-  //         let day = "2022-09-" + text;
-  //         if (
-  //           values != undefined &&
-  //           values["Time Series (Daily)"] != undefined &&
-  //           values["Time Series (Daily)"][day] !== undefined
-  //         ) {
-  //           dailyClose.push({
-  //             Date: new Date(day),
-  //             Stock: values["Time Series (Daily)"][day]["4. close"],
-  //           });
-  //           // console.log(values["Time Series (Daily)"][day]["4. close"]);
-  //         }
-  //       }
-  //       setStocks(dailyClose);
-  //     };
-  //     getData();
-  //   }
-  // }, []);
+  useEffect(() => {
+    const getData = () => {};
+    let stock = "NKE";
+    if (stock != undefined) {
+      // // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=demo
+      const getData = async () => {
+        const beginString =
+          "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=";
+        const endString = "&interval=5min&apikey=N3GPUAQX5ZZBX9KH";
+        const stockVal = beginString + stock + endString;
+        const response = await axios.get(stockVal);
+        const myJson = await response.data;
+        console.log(myJson);
+        let values = myJson;
+        let dailyClose = [];
+        for (let i = 1; i < 31; i++) {
+          let numVal = i;
+          let text;
+          if (i < 10) {
+            text = "0" + numVal.toString();
+          } else {
+            text = numVal.toString();
+          }
+          let day = "2022-09-" + text;
+          if (
+            values != undefined &&
+            values["Time Series (Daily)"] != undefined &&
+            values["Time Series (Daily)"][day] !== undefined
+          ) {
+            dailyClose.push({
+              Date: new Date(day),
+              Stock: values["Time Series (Daily)"][day]["4. close"],
+            });
+            console.log(
+              stock + " " + values["Time Series (Daily)"][day]["4. close"]
+            );
+          }
+        }
+        setStocks(dailyClose);
+      };
+      getData();
+    }
+  }, []);
 
   let data = [
     [
@@ -79,9 +82,9 @@ const DualGraph = () => {
   // stocks.forEach((dataPoint) => {
   // });
 
-  console.log(dummyData);
+  console.log(stocks);
 
-  dummyData.forEach((dataPoint) => {
+  stocks.forEach((dataPoint) => {
     data.push([new Date(dataPoint["Date"]), dataPoint["Stock"], 10]);
   });
 
