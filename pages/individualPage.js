@@ -20,21 +20,22 @@ export default function individualPage(props) {
       setResults(result);
     };
 
-    // fetchData();
+    fetchData();
   }, []);
 
   return (
     <Container width="100%" maxW="container.xl">
       <Navbar />
+      <SearchInput />
       <Heading m={10}>{props.person ? props.person : "Dummy Name"}</Heading>
 
       <Person
         m={10}
-        sentiment={results ? results.data.mainEntity.avgScore : null}
-        magnitude={results ? results.data.mainEntity.avgMagnitude : null}
+        sentiment={results ? results.data[6].mainEntity.avgScore : null}
+        magnitude={results ? results.data[6].mainEntity.avgMagnitude : null}
       />
 
-      <Graph />
+      {results ? <Graph sentiments={results ? results.data : null}/> : null}
     </Container>
   );
 }

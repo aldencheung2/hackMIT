@@ -24,7 +24,7 @@ export const options = {
   },
 };
 
-const DualGraph = () => {
+const DualGraph = (props) => {
   const [stocks, setStocks] = useState([]);
 
   useEffect(() => {
@@ -94,11 +94,53 @@ const DualGraph = () => {
 
   // stocks.forEach((dataPoint) => {
   // });
+  console.log(props.sentiments);
+
+  const sents = props.sentiments;
+
+  function subtractSeconds(numOfSeconds, date = new Date()) {
+    date.setSeconds(date.getSeconds() - numOfSeconds);
+
+    return date;
+  }
+
+  function getPastSevenDays() {
+    const pastSevenDays = [];
+
+    for (let i = 7; i > 0; i--) {
+      const startTime = new Date(new Date().setDate(new Date().getDate() - i));
+      const startTimeCloned = new Date(startTime.valueOf());
+      const endTime = subtractSeconds(
+        10,
+        new Date(startTimeCloned.setDate(startTimeCloned.getDate() + 1))
+      );
+      pastSevenDays.push({
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+      });
+    }
+
+    return pastSevenDays;
+  }
+
+  let pastDates = getPastSevenDays();
+
+  let counter = 0;
+
+  console.log(props.sentiments);
+
+  // props.sentiments.forEach((sents) => {
+  //   // data.push([pastDates[counter], sents.mainEntity.avgScore, 1]);
+  //   data.push([new Date(pastDates[counter].endTime), sents.mainEntity.avgScore, 1]);
+  //   // data.push([counter, sents.mainEntity.avgScore, 1]);
+  //   counter++;
+  // });
 
   console.log(stocks);
-
+  counter = 0;
   stocks.forEach((dataPoint) => {
-    data.push([new Date(dataPoint["Date"]), dataPoint["Stock"], 10]);
+    data.push([new Date(dataPoint["Date"]), dataPoint["Stock"], props.sentiments[counter].mainEntity.avgScore*100]);
+    counter++;
   });
 
   return (

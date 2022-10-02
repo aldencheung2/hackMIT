@@ -16,12 +16,12 @@ export default async function handler(req, res) {
       const [result] = await client.analyzeEntitySentiment({ document });
       const entities = result.entities;
 
-      console.log("Entities and sentiments:");
+      // console.log("Entities and sentiments:");
       entities.forEach((entity) => {
-        console.log(`  Name: ${entity.name}`);
-        console.log(`  Type: ${entity.type}`);
-        console.log(`  Score: ${entity.sentiment.score}`);
-        console.log(`  Magnitude: ${entity.sentiment.magnitude}`);
+      //   console.log(`  Name: ${entity.name}`);
+      //   console.log(`  Type: ${entity.type}`);
+      //   console.log(`  Score: ${entity.sentiment.score}`);
+      //   console.log(`  Magnitude: ${entity.sentiment.magnitude}`);
         if (entity.name in data) {
           data[entity.name]["totalScore"] += entity.sentiment.score;
           data[entity.name]["totalMagnitude"] += entity.sentiment.magnitude;
@@ -63,6 +63,7 @@ export default async function handler(req, res) {
     data1["relatedSubjects"] = relatedSubjects
       .sort(salienceComparator)
       .reverse();
+    // console.log(data1["Elon Musk"]);
     return data1;
   }
 
@@ -93,14 +94,14 @@ export default async function handler(req, res) {
     if (endTime != undefined) {
       apiString += "&end_time=" + endTime;
     }
-    const response = await fetch(apiString, {
+    let response = await fetch(apiString, {
       headers: {
         Authorization:
-          "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n",
+          "Bearer AAAAAAAAAAAAAAAAAAAAAB%2FNhgEAAAAAqSree%2FFvjf%2Br4hTwJ4813w5nTsU%3Dfa1IiGOcy6U1mKUtjGqsuD35WfHftazUaX3lXcTupzvqkWTCj3",
       },
     });
-    const myJson = await response.json(); //extract JSON from the http response
-    console.log("My jsjon", myJson);
+    let myJson = await response.json(); //extract JSON from the http response
+    // console.log("My jsjon", myJson);
     let data1 = await analyzeEach(myJson);
 
     let result = await postProcess(data1);
@@ -115,6 +116,7 @@ export default async function handler(req, res) {
       startTime,
       endTime,
     };
+    // console.log(sentiments.mainEntity);
 
     return sentiments;
   }
@@ -126,7 +128,7 @@ export default async function handler(req, res) {
   }
 
   function getPastSevenDays() {
-    const pastSevenDays = [];
+    let pastSevenDays = [];
 
     for (let i = 7; i > 0; i--) {
       const startTime = new Date(new Date().setDate(new Date().getDate() - i));
@@ -145,11 +147,22 @@ export default async function handler(req, res) {
   }
 
   async function runGetTweetsForSevenDays() {
-    const pastSevenDaysArray = getPastSevenDays();
-    const resultsArray = pastSevenDaysArray.map((day) => {
+    let pastSevenDaysArray = getPastSevenDays();
+    // const resultsArray = pastSevenDaysArray.map((day) => {
+    //   return getTweets(req.body.person, 10, day.startTime, day.endTime);
+    // });
+    // let resultsArray = [];
+    // for (var i = 0; i < pastSevenDaysArray.length; i++){
+    //   getTweets(req.body.person, 10, pastSevenDaysArray[i].startTime, pastSevenDaysArray[i].endTime);
+    // }
+    let resultsArray = pastSevenDaysArray.map((day) => {
+      console.log(day)
       return getTweets(req.body.person, 10, day.startTime, day.endTime);
     });
+    
     const results = await Promise.all(resultsArray);
+    // console.log(resultsArray);
+    // console.log(pastSevenDaysArray);
     res.status(200).json(results);
   }
 
