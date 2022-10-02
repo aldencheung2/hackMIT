@@ -105,13 +105,20 @@ export default async function handler(req, res) {
 
     let result = await postProcess(data1);
 
+    for(let i = 0; i < result['relatedSubjects'].length; i++){
+      if (result['relatedSubjects'][i].name == term){
+        result['relatedSubjects'].splice(i, 1);
+        break;
+      }
+    }
+
     // const sentiments = {
     //   mainEntity: result[term],
     //   sideEntities: [result].filter((entity) => entity !== term),
     // };
     let tweetId;
     if (startTime) {
-      console.log(myJson);
+      // console.log(myJson);
       tweetId = myJson.data[0].id;
     }
     const sentiments = {
@@ -119,7 +126,10 @@ export default async function handler(req, res) {
       startTime,
       endTime,
       tweetId,
+      relatedSubjects: result['relatedSubjects'],
+      result: result
     };
+    // console.log(result);
     // console.log(sentiments.mainEntity);
 
     return sentiments;

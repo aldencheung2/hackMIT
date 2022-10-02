@@ -31,7 +31,9 @@ const Person = (props) => {
       {...props}
     >
       <div style={{ padding: "25px" }}>
-        
+      <Text textAlign="center" marginBottom="25">
+          Salience: {Math.round(props.salience * 100) / 100}
+        </Text>
         <Text fontWeight="bold" textAlign="center" marginTop={25}>
           {props.name}
         </Text>

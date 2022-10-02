@@ -33,6 +33,7 @@ export default function individualPage(props) {
         <Flex height="md" justifyContent="space-around">
           <Person
             m={10}
+            name = {""}
             sentiment={results ? results[6].mainEntity.avgScore : null}
             magnitude={results ? results[6].mainEntity.avgMagnitude : null}
           />
@@ -46,7 +47,38 @@ export default function individualPage(props) {
           </Flex>
           {results ? <Graph sentiments={results ? results : null}/> : null}
         </Flex>
+        <Flex height="md" justifyContent="space-around">
+        <Person
+            m={10}
+            name = {results ? results[6].relatedSubjects[0].name : null}
+            sentiment={results ? results[6].result[results[6].relatedSubjects[0].name].avgScore : null}
+            magnitude={results ? results[6].result[results[6].relatedSubjects[0].name].avgMagnitude : null}
+            salience = {results ? results[6].relatedSubjects[0].salience : null}
+          />
+          <Person
+            m={10}
+            name = {results ? results[6].relatedSubjects[1].name : null}
+            sentiment={results ? results[6].result[results[6].relatedSubjects[1].name].avgScore : null}
+            magnitude={results ? results[6].result[results[6].relatedSubjects[1].name].avgMagnitude : null}
+            salience = {results ? results[6].relatedSubjects[1].salience : null}
+          />
+          <Person
+            m={10}
+            name = {results ? results[6].relatedSubjects[2].name : null}
+            sentiment={results ? results[6].result[results[6].relatedSubjects[2].name].avgScore : null}
+            magnitude={results ? results[6].result[results[6].relatedSubjects[2].name].avgMagnitude : null}
+            salience = {results ? results[6].relatedSubjects[2].salience : null}
+          />
+          <Person
+            m={10}
+            name = {results ? results[6].relatedSubjects[3].name : null}
+            sentiment={results ? results[6].result[results[6].relatedSubjects[3].name].avgScore : null}
+            magnitude={results ? results[6].result[results[6].relatedSubjects[3].name].avgMagnitude : null}
+            salience = {results ? results[6].relatedSubjects[3].salience : null}
+          />
+          </Flex>
       </Container>
+      
     );
   } else {
     return <Heading>Loading...</Heading>;
