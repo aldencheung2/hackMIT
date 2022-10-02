@@ -87,7 +87,7 @@ export default async function handler(req, res) {
       term +
       "%20-is%3Aretweet%20lang%3Aen&max_results=" +
       num +
-      "&tweet.fields=created_at,public_metrics";
+      "&tweet.fields=created_at,public_metrics&sort_order=relevancy";
     if (startTime != undefined) {
       apiString += "&start_time=" + startTime;
     }
