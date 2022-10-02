@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar/Navbar";
 import SearchInput from "../components/SearchInput/SearchInput";
 import TopFiveView from "../components/Top5View/Top5View";
 import Person from "../components/Person/Person";
+import Graph from "../components/Graph/Graph";
 
 export default function individualPage(props) {
   const [results, setResults] = useState("");
@@ -12,6 +13,7 @@ export default function individualPage(props) {
     const fetchData = async () => {
       const body = {
         person: props.person,
+        isIndividual: true,
       };
       const result = await axios.put("api/hello", body);
       console.log("RESULTSSSSSSS", result);
@@ -25,13 +27,14 @@ export default function individualPage(props) {
     <Container width="100%" maxW="container.xl">
       <Navbar />
       <Heading m={10}>{props.person ? props.person : "Dummy Name"}</Heading>
-     
+
       <Person
         m={10}
         sentiment={results ? results.data.mainEntity.avgScore : null}
         magnitude={results ? results.data.mainEntity.avgMagnitude : null}
-
       />
+
+      <Graph />
     </Container>
   );
 }

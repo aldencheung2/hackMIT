@@ -100,25 +100,70 @@ export default async function handler(req, res) {
       },
     });
     const myJson = await response.json(); //extract JSON from the http response
-
+    console.log("My jsjon", myJson);
     let data1 = await analyzeEach(myJson);
 
     let result = await postProcess(data1);
 
+    // const sentiments = {
+    //   mainEntity: result[term],
+    //   sideEntities: [result].filter((entity) => entity !== term),
+    // };
+
     const sentiments = {
       mainEntity: result[term],
-      sideEntities: [result].filter((entity) => entity !== term),
+      startTime,
+      endTime,
     };
 
     return sentiments;
+  }
+
+  function subtractSeconds(numOfSeconds, date = new Date()) {
+    date.setSeconds(date.getSeconds() - numOfSeconds);
+
+    return date;
+  }
+
+  function getPastSevenDays() {
+    const pastSevenDays = [];
+
+    for (let i = 7; i > 0; i--) {
+      const startTime = new Date(new Date().setDate(new Date().getDate() - i));
+      const startTimeCloned = new Date(startTime.valueOf());
+      const endTime = subtractSeconds(
+        10,
+        new Date(startTimeCloned.setDate(startTimeCloned.getDate() + 1))
+      );
+      pastSevenDays.push({
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+      });
+    }
+
+    return pastSevenDays;
+  }
+
+  async function runGetTweetsForSevenDays() {
+    const pastSevenDaysArray = getPastSevenDays();
+    const resultsArray = pastSevenDaysArray.map((day) => {
+      return getTweets(req.body.person, 10, day.startTime, day.endTime);
+    });
+    const results = await Promise.all(resultsArray);
+    res.status(200).json(results);
   }
 
   try {
     /**
      * Make sure the input for the name is Upper cased!!! like Joe Biden, not joe biden
      */
-    const result = await getTweets(req.body.person, 0);
-    res.status(200).json(result);
+
+    if (req.body.isIndividual) {
+      runGetTweetsForSevenDays();
+    } else {
+      const result = await getTweets(req.body.person, 10);
+      res.status(200).json(result);
+    }
   } catch (error) {
     console.log("ERROR");
     console.log(error);
