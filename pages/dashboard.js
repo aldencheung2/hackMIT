@@ -8,13 +8,36 @@ import TopFiveView from "../components/Top5View/Top5View";
 export default function Dashboard() {
   const [results, setResults] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  console.log("results: ", results);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get("api/hello");
-      console.log(result);
-      setResults(result);
+      const topFivePeople = [
+        "Elon Musk",
+        "KSI",
+        "Tim Cook",
+        "Mark Zuckerburg",
+        "Jeff Bezos",
+      ];
+
+      const gatherSentiments = [];
+
+      for (const person of topFivePeople) {
+        const body = {
+          person,
+        };
+        const result = await (await axios.put("api/hello", body)).data;
+        gatherSentiments.push({ name: person, ...result });
+      }
+
+      const sentimentAverage = gatherSentiments.map((person) => {
+        return {
+          name: person.name,
+          avgScore: person.mainEntity.avgScore,
+          avgMagnitude: person.mainEntity.avgMagnitude,
+        };
+      });
+      console.log("SENTIMENT AVERAGEEEE", sentimentAverage);
+      setResults(sentimentAverage);
     };
 
     fetchData();
@@ -25,13 +48,11 @@ export default function Dashboard() {
       maxW="container.xl"
       display="flex"
       height="100vh"
-      w = "100%"
+      w="100%"
       flexDir="column"
       // border = '1px solid black'
     >
       <Navbar />
-
-      
 
       <Flex
         flexDir="column"
@@ -40,7 +61,11 @@ export default function Dashboard() {
         // border="1px solid black"
       >
         <SearchInput />
-        <TopFiveView sentiment={results ? results.data.mainEntity.avgScore : null} magnitude={results ? results.data.mainEntity.avgMagnitude : null}/>
+        <TopFiveView
+          sentiment={results ? results.map(person => person.avgScore) : null}
+          magnitude={results ? results.map(person => person.avgMagnitude) : null}
+          name={results ? results.map(person => person.name) : null}
+        />
       </Flex>
     </Container>
   );

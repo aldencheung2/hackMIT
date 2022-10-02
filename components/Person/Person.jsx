@@ -1,6 +1,6 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import ksi from "./ksi.jpeg";
 
 const Person = (props) => {
@@ -14,9 +14,9 @@ const Person = (props) => {
   // let green = 256*(1-num);
   // console.log(red);
   // console.log(green);
-  let hue = 120 * (0.5+props.sentiment/2);
+  let hue = 120 * (0.5 + props.sentiment / 2);
   // 4 to 16
-  let barWidth = 6 + Math.min(10, props.magnitude*8);
+  let barWidth = 6 + Math.min(10, props.magnitude * 8);
   // barWidth = 8;
   return (
     <Flex
@@ -31,30 +31,34 @@ const Person = (props) => {
       {...props}
     >
       <div style={{ padding: "25px" }}>
-        <Image
-          src={sampleImage}
-          rounded="full"
-          objectFit="cover"
-          boxSize={40}
-          display= 'block'
-          marginLeft= 'auto'
-          marginRight= 'auto'
-        />
+        
         <Text fontWeight="bold" textAlign="center" marginTop={25}>
-          Name
+          {props.name}
         </Text>
-        <Text textAlign="center" marginBottom = "25">Sentiment Score:</Text>
+        <Text textAlign="center" marginBottom="25">
+          Sentiment Score:
+        </Text>
         <div style={{ width: 200, height: 200 }}>
-        <CircularProgressbar value={Math.round(props.sentiment * 100) / 100} strokeWidth = {barWidth} maxValue={1} minValue={-1} text={`${Math.round(props.sentiment * 100)}%`} styles={{
-    path: {
-      // Path color
-      stroke: `hsl(${hue}, 100%, 50%)`,
-      // stroke: `rgb(${red}, ${green}, 0)`,
-      strokeLinecap: 'round',
-      transition: 'stroke-dashoffset 0.5s ease 0s',
-    }}}/>
+          <CircularProgressbar
+            value={Math.round(props.sentiment * 100) / 100}
+            strokeWidth={barWidth}
+            maxValue={1}
+            minValue={-1}
+            text={`${Math.round(props.sentiment * 100)}%`}
+            styles={{
+              path: {
+                // Path color
+                stroke: `hsl(${hue}, 100%, 50%)`,
+                // stroke: `rgb(${red}, ${green}, 0)`,
+                strokeLinecap: "round",
+                transition: "stroke-dashoffset 0.5s ease 0s",
+              },
+            }}
+          />
         </div>
-        <Text textAlign="center" marginTop = "25">Magnitude Score: {Math.round(props.magnitude * 100) / 100}</Text>
+        <Text textAlign="center" marginTop="25">
+          Magnitude Score: {Math.round(props.magnitude * 100) / 100}
+        </Text>
       </div>
     </Flex>
   );

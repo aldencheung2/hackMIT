@@ -1,28 +1,37 @@
-import { Container, Flex, Text } from "@chakra-ui/react";
+import { Container, Flex, Heading, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import SearchInput from "../components/SearchInput/SearchInput";
 import TopFiveView from "../components/Top5View/Top5View";
+import Person from "../components/Person/Person";
 
 export default function individualPage(props) {
-    useEffect(() => {
-      const fetchData = async () => {
-        const body = {
-            
-        }
-        const result = await axios.put("api/hello");
-        console.log(result);
-        setResults(result);
+  const [results, setResults] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      const body = {
+        person: props.person,
       };
+      const result = await axios.put("api/hello", body);
+      console.log("RESULTSSSSSSS", result);
+      setResults(result);
+    };
 
-      fetchData();
-    }, []);
+    // fetchData();
+  }, []);
 
   return (
-    <Container>
-      individualPage
-      <Text>{props.person}</Text>
+    <Container width="100%" maxW="container.xl">
+      <Navbar />
+      <Heading m={10}>{props.person ? props.person : "Dummy Name"}</Heading>
+     
+      <Person
+        m={10}
+        sentiment={results ? results.data.mainEntity.avgScore : null}
+        magnitude={results ? results.data.mainEntity.avgMagnitude : null}
+
+      />
     </Container>
   );
 }

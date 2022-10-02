@@ -117,7 +117,7 @@ export default async function handler(req, res) {
     /**
      * Make sure the input for the name is Upper cased!!! like Joe Biden, not joe biden
      */
-    const result = await getTweets("Joe Biden", 0);
+    const result = await getTweets(req.body.person, 0);
     res.status(200).json(result);
   } catch (error) {
     console.log("ERROR");
