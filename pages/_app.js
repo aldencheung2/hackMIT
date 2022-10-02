@@ -1,13 +1,14 @@
-import '../styles/globals.css';
+import "../styles/globals.css";
 import { ChakraProvider } from "@chakra-ui/react";
-
+import { ContextProvider } from "../contexts";
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider>
-      <Component {...pageProps} />
+      <ContextProvider>
+        <Component {...pageProps} />
+      </ContextProvider>
     </ChakraProvider>
-  )
-
+  );
 }
 
-export default MyApp
+export default MyApp;

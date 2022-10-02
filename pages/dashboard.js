@@ -5,8 +5,11 @@ import Navbar from "../components/Navbar/Navbar";
 import SearchInput from "../components/SearchInput/SearchInput";
 import TopFiveView from "../components/Top5View/Top5View";
 
+
 export default function Dashboard() {
+
   const [results, setResults] = useState("");
+  console.log("results: ", results);
 
   useEffect(() => {
     const fetchData = async () => {
