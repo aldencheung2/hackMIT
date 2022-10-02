@@ -11,10 +11,10 @@ const TopFiveView = (props) => {
       width="full"
       mt={24}
     >
-      <Person sentiment={props.sentiment} />
-      <Person sentiment={props.sentiment} />
-      <Person sentiment={props.sentiment} />
-      <Person sentiment={props.sentiment} />
+      <Person sentiment={props.sentiment} magnitude={props.magnitude}/>
+      <Person sentiment={props.sentiment} magnitude={props.magnitude}/>
+      <Person sentiment={props.sentiment} magnitude={props.magnitude}/>
+      <Person sentiment={props.sentiment} magnitude={props.magnitude}/>
     </Flex>
   );
 };

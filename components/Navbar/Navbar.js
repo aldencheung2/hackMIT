@@ -24,18 +24,19 @@ const Navbar = (props) => {
 
       {...props}
       bg={bg}
-      w="full"
+      width="100%"
       px={{
         base: 2,
         sm: 4,
       }}
-      shadow="md"
+      // shadow="md"
+      borderBottom = "1px solid lightgrey"
     >
       <Flex alignItems="center" justifyContent="space-between" mx="auto">
         <Flex>
           <Text
             as="a"
-            href="/"
+            href="/dashboard"
             title="Choc Home Page"
             display="flex"
             alignItems="center"

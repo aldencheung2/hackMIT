@@ -25,7 +25,9 @@ export default function Dashboard() {
       maxW="container.xl"
       display="flex"
       height="100vh"
+      w = "100%"
       flexDir="column"
+      // border = '1px solid black'
     >
       <Navbar />
 
@@ -35,12 +37,10 @@ export default function Dashboard() {
         flexDir="column"
         height="100%"
         alignItems="center"
-        border="1px solid black"
+        // border="1px solid black"
       >
         <SearchInput />
-        <TopFiveView
-          sentiment={results ? results.data.mainEntity.avgScore : null}
-        />
+        <TopFiveView sentiment={results ? results.data.mainEntity.avgScore : null} magnitude={results ? results.data.mainEntity.avgMagnitude : null}/>
       </Flex>
     </Container>
   );

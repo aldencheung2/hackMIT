@@ -120,7 +120,7 @@ export default async function handler(req, res) {
     const result = await getTweets("Joe Biden", 0);
     res.status(200).json(result);
   } catch (error) {
-    console.log("ERRRORRRRRR BITCH");
+    console.log("ERROR");
     console.log(error);
     res.status(500).send(error);
   }
