@@ -42,7 +42,7 @@ const DualGraph = () => {
         console.log(myJson);
         let values = myJson;
         let dailyClose = [];
-        for (let i = 1; i < 31; i++) {
+        for (let i = 25; i < 31; i++) {
           let numVal = i;
           let text;
           if (i < 10) {
@@ -65,6 +65,19 @@ const DualGraph = () => {
             );
           }
         }
+
+        let newURI =
+          "https://finnhub.io/api/v1/quote?symbol=" +
+          stock +
+          "&token=ccs93paad3ifi21da5h0ccs93paad3ifi21da5hg";
+
+        let newResponse = await axios(newURI);
+        let newData = await newResponse.data;
+
+        dailyClose.push({
+          Date: new Date(),
+          Stock: newData["c"],
+        });
         setStocks(dailyClose);
       };
       getData();
