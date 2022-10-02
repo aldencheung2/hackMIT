@@ -34,7 +34,7 @@ export default function Dashboard() {
         border="1px solid black"
       >
         <SearchInput />
-        <TopFiveView sentiment={results ? results.data.mainEntity.avgScore : null} />
+        <TopFiveView sentiment={results ? results.data.mainEntity.avgScore : null} magnitude={results ? results.data.mainEntity.avgMagnitude : null}/>
       </Flex>
     </Container>
   );
