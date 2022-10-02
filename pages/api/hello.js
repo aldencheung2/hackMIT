@@ -16,12 +16,12 @@ export default async function handler(req, res) {
       const [result] = await client.analyzeEntitySentiment({ document });
       const entities = result.entities;
 
-      console.log("Entities and sentiments:");
+      // console.log("Entities and sentiments:");
       entities.forEach((entity) => {
-        console.log(`  Name: ${entity.name}`);
-        console.log(`  Type: ${entity.type}`);
-        console.log(`  Score: ${entity.sentiment.score}`);
-        console.log(`  Magnitude: ${entity.sentiment.magnitude}`);
+        // console.log(`  Name: ${entity.name}`);
+        // console.log(`  Type: ${entity.type}`);
+        // console.log(`  Score: ${entity.sentiment.score}`);
+        // console.log(`  Magnitude: ${entity.sentiment.magnitude}`);
         if (entity.name in data) {
           data[entity.name]["totalScore"] += entity.sentiment.score;
           data[entity.name]["totalMagnitude"] += entity.sentiment.magnitude;
@@ -84,9 +84,9 @@ export default async function handler(req, res) {
     let apiString =
       "https://api.twitter.com/2/tweets/search/recent?query=" +
       term +
-      "%20-is%3Aretweet&max_results=" +
+      "%20-is%3Aretweet%20lang%3Aen&max_results=" +
       num +
-      "&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username&sort_order=relevancy";
+      "&tweet.fields=created_at,public_metrics";
     if (startTime != undefined) {
       apiString += "&start_time=" + startTime;
     }
@@ -96,11 +96,10 @@ export default async function handler(req, res) {
     const response = await fetch(apiString, {
       headers: {
         Authorization:
-          "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n",
+          "Bearer AAAAAAAAAAAAAAAAAAAAAB%2FNhgEAAAAAqSree%2FFvjf%2Br4hTwJ4813w5nTsU%3Dfa1IiGOcy6U1mKUtjGqsuD35WfHftazUaX3lXcTupzvqkWTCj3",
       },
     });
-    const myJson = await response.json(); //extract JSON from the http response
-    console.log("My jsjon", myJson);
+    const myJson = await response.json(); // extract JSON from the http response
     let data1 = await analyzeEach(myJson);
 
     let result = await postProcess(data1);
@@ -109,11 +108,16 @@ export default async function handler(req, res) {
     //   mainEntity: result[term],
     //   sideEntities: [result].filter((entity) => entity !== term),
     // };
-
+    let tweetId;
+    if (startTime) {
+      console.log(myJson);
+      tweetId = myJson.data[0].id;
+    }
     const sentiments = {
       mainEntity: result[term],
       startTime,
       endTime,
+      tweetId,
     };
 
     return sentiments;
@@ -149,7 +153,9 @@ export default async function handler(req, res) {
     const resultsArray = pastSevenDaysArray.map((day) => {
       return getTweets(req.body.person, 10, day.startTime, day.endTime);
     });
+  
     const results = await Promise.all(resultsArray);
+    console.log("RESULTTTTTTTS", results);
     res.status(200).json(results);
   }
 

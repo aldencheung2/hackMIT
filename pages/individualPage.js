@@ -1,11 +1,10 @@
-import { Container, Flex, Heading, Text } from "@chakra-ui/react";
+import { Container, Flex, Heading, Text, Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import SearchInput from "../components/SearchInput/SearchInput";
-import TopFiveView from "../components/Top5View/Top5View";
 import Person from "../components/Person/Person";
 import Graph from "../components/Graph/Graph";
+import TweetEmbed from "react-tweet-embed";
 
 export default function individualPage(props) {
   const [results, setResults] = useState("");
@@ -15,28 +14,43 @@ export default function individualPage(props) {
         person: props.person,
         isIndividual: true,
       };
-      const result = await axios.put("api/hello", body);
-      console.log("RESULTSSSSSSS", result);
+      const result = await (await axios.put("api/hello", body)).data;
+    //   console.log(result);
       setResults(result);
     };
 
-    // fetchData();
+    fetchData();
   }, []);
 
-  return (
-    <Container width="100%" maxW="container.xl">
-      <Navbar />
-      <Heading m={10}>{props.person ? props.person : "Dummy Name"}</Heading>
+  if (results) {
+    return (
+      <Container width="100%" maxW="container.xl">
+        <Navbar />
+        <Heading m={10}>
+          {props.person ? props.person : "Dummy Name"}: Public Opinion
+        </Heading>
 
-      <Person
-        m={10}
-        sentiment={results ? results.data.mainEntity.avgScore : null}
-        magnitude={results ? results.data.mainEntity.avgMagnitude : null}
-      />
-
-      <Graph />
-    </Container>
-  );
+        <Flex height="md" justifyContent="space-around">
+          <Person
+            m={10}
+            sentiment={results ? results[6].mainEntity.avgScore : null}
+            magnitude={results ? results[6].mainEntity.avgMagnitude : null}
+          />
+          <Flex overflowY="scroll" flexDirection="column" gap={2}>
+            {results &&
+              results
+                .slice(0, 5)
+                .map((object) => (
+                  <TweetEmbed tweetId={object.tweetId} width={250} />
+                ))}
+          </Flex>
+          <Graph />
+        </Flex>
+      </Container>
+    );
+  } else {
+    return <Heading>Loading...</Heading>;
+  }
 }
 
 export async function getServerSideProps(context) {

@@ -9,11 +9,9 @@ const SearchInput = (props) => {
   };
   return (
     <Flex flexDir="column" py={4}>
-      <Heading my={4}>Search Person</Heading>
-      {/* <Input placeholder='Search' width="3xl" height={16}/> */}
       <div
         style={{
-          width: "3xl",
+          width: "4xl",
           height: "16",
           display: "flex",
           flexDirection: "row",
