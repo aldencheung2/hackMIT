@@ -1,16 +1,10 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import ksi from "./ksi.jpeg";
-// import './Person.css'
 
 const Person = (props) => {
   const sampleImage = "https://bit.ly/dan-abramov";
-  const circleStyle = {
-    width: "50px",
-    height: "50px",
-    borderRadius: "25px",
-    background: "red",
-    display: "inline-block",
-  };
   return (
     <Flex
       flexDir="column"
@@ -34,32 +28,8 @@ const Person = (props) => {
           Name
         </Text>
         <Text>Sentiment Score: {props.sentiment}</Text>
-        {/* <div style={circleStyle}/> */}
-        <div class="container">
-          <div class="row">
-            <div class="col-md-3 col-sm-6">
-              <div class="progress blue">
-                <span class="progress-left">
-                  <span class="progress-bar"></span>
-                </span>
-                <span class="progress-right">
-                  <span class="progress-bar"></span>
-                </span>
-                <div class="progress-value">90%</div>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-              <div class="progress yellow">
-                <span class="progress-left">
-                  <span class="progress-bar"></span>
-                </span>
-                <span class="progress-right">
-                  <span class="progress-bar"></span>
-                </span>
-                <div class="progress-value">75%</div>
-              </div>
-            </div>
-          </div>
+        <div style={{ width: 200, height: 200 }}>
+        <CircularProgressbar value={props.sentiment} maxValue={1} text={`${props.sentiment * 100}%`} />;
         </div>
       </div>
     </Flex>
