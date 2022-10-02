@@ -18,17 +18,10 @@ export default async function handler(req, res) {
 
       // console.log("Entities and sentiments:");
       entities.forEach((entity) => {
-<<<<<<< HEAD
       //   console.log(`  Name: ${entity.name}`);
       //   console.log(`  Type: ${entity.type}`);
       //   console.log(`  Score: ${entity.sentiment.score}`);
       //   console.log(`  Magnitude: ${entity.sentiment.magnitude}`);
-=======
-        // console.log(`  Name: ${entity.name}`);
-        // console.log(`  Type: ${entity.type}`);
-        // console.log(`  Score: ${entity.sentiment.score}`);
-        // console.log(`  Magnitude: ${entity.sentiment.magnitude}`);
->>>>>>> e79f096ebbb214e8b821b786fb105db7b0f04015
         if (entity.name in data) {
           data[entity.name]["totalScore"] += entity.sentiment.score;
           data[entity.name]["totalMagnitude"] += entity.sentiment.magnitude;
@@ -107,12 +100,7 @@ export default async function handler(req, res) {
           "Bearer AAAAAAAAAAAAAAAAAAAAAB%2FNhgEAAAAAqSree%2FFvjf%2Br4hTwJ4813w5nTsU%3Dfa1IiGOcy6U1mKUtjGqsuD35WfHftazUaX3lXcTupzvqkWTCj3",
       },
     });
-<<<<<<< HEAD
-    let myJson = await response.json(); //extract JSON from the http response
-    // console.log("My jsjon", myJson);
-=======
     const myJson = await response.json(); // extract JSON from the http response
->>>>>>> e79f096ebbb214e8b821b786fb105db7b0f04015
     let data1 = await analyzeEach(myJson);
 
     let result = await postProcess(data1);
@@ -175,16 +163,10 @@ export default async function handler(req, res) {
       console.log(day)
       return getTweets(req.body.person, 10, day.startTime, day.endTime);
     });
-<<<<<<< HEAD
     
     const results = await Promise.all(resultsArray);
     // console.log(resultsArray);
     // console.log(pastSevenDaysArray);
-=======
-  
-    const results = await Promise.all(resultsArray);
-    console.log("RESULTTTTTTTS", results);
->>>>>>> e79f096ebbb214e8b821b786fb105db7b0f04015
     res.status(200).json(results);
   }
 
