@@ -5,10 +5,9 @@ import Navbar from "../components/Navbar/Navbar";
 import SearchInput from "../components/SearchInput/SearchInput";
 import TopFiveView from "../components/Top5View/Top5View";
 
-
 export default function Dashboard() {
-
   const [results, setResults] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   console.log("results: ", results);
 
   useEffect(() => {
@@ -30,6 +29,8 @@ export default function Dashboard() {
     >
       <Navbar />
 
+      
+
       <Flex
         flexDir="column"
         height="100%"
@@ -37,7 +38,9 @@ export default function Dashboard() {
         border="1px solid black"
       >
         <SearchInput />
-        <TopFiveView sentiment={results ? results.data.mainEntity.avgScore : null} />
+        <TopFiveView
+          sentiment={results ? results.data.mainEntity.avgScore : null}
+        />
       </Flex>
     </Container>
   );
