@@ -3,7 +3,7 @@ import { Flex, Input, Heading } from "@chakra-ui/react";
 const SearchInput = () => {
     return (
         <Flex flexDir="column" py={4}>
-            <Heading my={4}>
+            <Heading textAlign='center' my={4}>
                 Search Person
             </Heading>
             {/* <Input placeholder='Search' width="3xl" height={16}/> */}
