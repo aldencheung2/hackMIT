@@ -159,12 +159,24 @@ export default async function handler(req, res) {
     // for (var i = 0; i < pastSevenDaysArray.length; i++){
     //   getTweets(req.body.person, 10, pastSevenDaysArray[i].startTime, pastSevenDaysArray[i].endTime);
     // }
-    let resultsArray = pastSevenDaysArray.map((day) => {
-      console.log(day)
-      return getTweets(req.body.person, 10, day.startTime, day.endTime);
-    });
+    // let resultsArray = pastSevenDaysArray.map((day) => {
+    //   console.log(day)
+    //   return getTweets(req.body.person, 10, day.startTime, day.endTime);
+    // });
+
+    // const results = await Promise.all(
+    //   pastSevenDaysArray.map(async (day) => {
+    //     await getTweets(req.body.person, 10, day.startTime, day.endTime);
+    //   })
+    // );
     
-    const results = await Promise.all(resultsArray);
+    let results = [];
+    for (let i = 0; i < pastSevenDaysArray.length; i++){
+      let r = await getTweets(req.body.person, 10, pastSevenDaysArray[i].startTime, pastSevenDaysArray[i].endTime);
+      results.push(r);
+    }
+    
+    // const results = await Promise.all(resultsArray);
     // console.log(resultsArray);
     // console.log(pastSevenDaysArray);
     res.status(200).json(results);

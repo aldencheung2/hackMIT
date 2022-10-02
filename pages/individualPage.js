@@ -44,7 +44,7 @@ export default function individualPage(props) {
                   <TweetEmbed tweetId={object.tweetId} width={250} />
                 ))}
           </Flex>
-          {results ? <Graph sentiments={results ? results.data : null}/> : null}
+          {results ? <Graph sentiments={results ? results : null}/> : null}
         </Flex>
       </Container>
     );
