@@ -4,25 +4,38 @@
 async function getTweets(term, num, startTime, endTime) {
   data = {};
   let apiString =
-    "https://api.twitter.com/2/tweets/search/recent?query=%22" +
+    'https://api.twitter.com/2/tweets/search/recent?query="' +
     term +
-    "%22%20-is%3Aretweet&max_results=" +
+    '"%20-is%3Aretweet&max_results=' +
     num +
-    "&tweet.fields=created_at,public_metrics&expansions=entities.mentions.username&sort_order=relevancy";
+    "&user.fields=&expansions=entities.mentions.username";
+  let tempApiString =
+    'https://api.twitter.com/2/tweets/search/recent?query="' +
+    term +
+    '"%20-is%3Aretweet&max_results=' +
+    num +
+    "&expansions=author_id";
   if (startTime != undefined) {
     apiString += "&start_time=" + startTime;
   }
   if (endTime != undefined) {
     apiString += "&end_time=" + endTime;
   }
-  const response = await fetch(apiString, {
+  const response = await fetch(tempApiString, {
     headers: {
       Authorization:
         "Bearer AAAAAAAAAAAAAAAAAAAAAEHMhgEAAAAABGmQmPZGpdlv5MXacZeb%2BmAQQXw%3DGnhVwzX7PaLUXMRmZt6sWDjwrHUUnBGvQhQhvAkOOsos9VqD1n",
     },
   });
   const myJson = await response.json(); //extract JSON from the http response
-  console.log(myJson.data ? myJson.data[0].created_at: myJson.error);
+
+  // let data1 = await analyzeEach(myJson);
+
+  // let result = await postProcess(data1);
+
+  const username = myJson.data[4].author_id
+  const tweetId = myJson.data[4].id;
+  console.log("url", "www.twitter.com/" + username + "/status/" + tweetId);
 }
 
-
+getTweets("Joe Biden", 10);

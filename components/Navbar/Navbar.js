@@ -15,13 +15,13 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineMenu } from "@chakra-ui/accordion";
+import Link from "next/link";
 
 const Navbar = (props) => {
   const bg = useColorModeValue("white", "gray.800");
   const mobileNav = useDisclosure();
   return (
     <Box
-
       {...props}
       bg={bg}
       width="100%"
@@ -30,7 +30,7 @@ const Navbar = (props) => {
         sm: 4,
       }}
       // shadow="md"
-      borderBottom = "1px solid lightgrey"
+      borderBottom="1px solid lightgrey"
     >
       <Flex alignItems="center" justifyContent="space-between" mx="auto">
         <Flex>
@@ -55,7 +55,9 @@ const Navbar = (props) => {
               md: "inline-flex",
             }}
           >
-            <Button variant="ghost">Home</Button>
+            <Link href={"/dashboard"}>
+              <Button variant="ghost">Home</Button>
+            </Link>
           </HStack>
           <Button colorScheme="brand" size="sm">
             Get Started

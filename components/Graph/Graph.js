@@ -1,6 +1,7 @@
 import React from "react";
 import { Chart } from "react-google-charts";
 import { useState, useEffect } from "react";
+import { Flex, Heading } from "@chakra-ui/react";
 import axios, { Axios } from "axios";
 // import stocks from "./test.json";
 
@@ -8,8 +9,8 @@ export const options = {
   chart: {
     title: "Trends",
   },
-  width: 900,
-  height: 500,
+  width: 500,
+  height: 300,
   series: {
     // Gives each series an axis name that matches the Y-axis below.
     0: { axis: "Temps" },
@@ -39,7 +40,7 @@ const DualGraph = (props) => {
         const stockVal = beginString + stock + endString;
         const response = await axios.get(stockVal);
         const myJson = await response.data;
-        console.log(myJson);
+        // console.log(myJson);
         let values = myJson;
         let dailyClose = [];
         for (let i = 25; i < 31; i++) {
@@ -60,9 +61,9 @@ const DualGraph = (props) => {
               Date: new Date(day),
               Stock: values["Time Series (Daily)"][day]["4. close"],
             });
-            console.log(
-              stock + " " + values["Time Series (Daily)"][day]["4. close"]
-            );
+            // console.log(
+            //   stock + " " + values["Time Series (Daily)"][day]["4. close"]
+            // );
           }
         }
 
@@ -136,30 +137,20 @@ const DualGraph = (props) => {
   //   counter++;
   // });
 
-  console.log(stocks);
-  counter = 0;
+  // console.log(stocks);
+
   stocks.forEach((dataPoint) => {
     data.push([new Date(dataPoint["Date"]), dataPoint["Stock"], props.sentiments[counter].mainEntity.avgScore*100]);
     counter++;
   });
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        height: "100vh",
-        width: "100%",
-      }}
-    >
-      <Chart
-        chartType="Line"
-        width="50%"
-        height="400px"
-        data={data}
-        options={options}
-      />
-    </div>
+    <Flex boxShadow="base" width="min" p={16} flexDirection="column">
+      <Heading size="md" my={3}>
+        Stock vs Opinion
+      </Heading>
+      <Chart chartType="Line" data={data} options={options} />
+    </Flex>
   );
 };
 
