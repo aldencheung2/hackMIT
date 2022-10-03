@@ -182,7 +182,7 @@ export default async function handler(req, res) {
     
     let results = [];
     for (let i = 0; i < pastSevenDaysArray.length; i++){
-      let r = await getTweets(req.body.person, 10, pastSevenDaysArray[i].startTime, pastSevenDaysArray[i].endTime);
+      let r = await getTweets(req.body.person, 50, pastSevenDaysArray[i].startTime, pastSevenDaysArray[i].endTime);
       results.push(r);
     }
     
